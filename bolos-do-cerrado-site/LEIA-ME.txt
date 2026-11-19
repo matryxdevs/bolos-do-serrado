@@ -1,0 +1,41 @@
+BOLOS DO CERRADO — SITE PRONTO PARA PUBLICAR
+==============================================
+
+1. CONTEÚDO
+- index.html: página inicial completa em português.
+- styles.css: cores, layout e adaptação para celulares.
+- script.js: menu responsivo, filtros de bolos e botões WhatsApp.
+- assets/logo-original.png: marca fornecida pelo cliente.
+- assets/apresentacao.mp4: vídeo promocional ilustrativo animado, incluso e funcional.
+- assets/favicon.png e assets/logo-transparente.png: elementos de marca.
+
+2. CONFIGURADO COM DADOS PÚBLICOS DA UNIDADE CANAÃ
+- WhatsApp: +55 94 99119-5754.
+- Endereço: Rua Novo Horizonte, nº 95, Canaã dos Carajás/PA.
+- Instagram: https://www.instagram.com/bolosdocerradocanaa/
+Confirme telefone, endereço e horário antes de usar em uma campanha publicitária.
+
+3. IMAGENS
+As fotografias exibidas são ilustrativas e carregadas da plataforma Pexels
+através da internet. Não representam necessariamente os produtos vendidos na loja.
+Para usar fotos reais, substitua os endereços dos atributos src no index.html
+pelos caminhos de suas próprias fotos, por exemplo assets/bolo-cenoura.jpg.
+Os sabores são sugestões, não um cardápio oficial; confirme itens e preços.
+O vídeo incluso é uma animação institucional ilustrativa, não uma filmagem da loja.
+
+4. PUBLICAR NA HOSTINGER
+- No hPanel, acesse Sites > Gerenciar > Gerenciador de arquivos.
+- Abra public_html, e coloque todo o CONTEÚDO deste pacote nesta pasta.
+- index.html deve estar diretamente na raiz public_html, ao lado de styles.css.
+- Acesse o domínio configurado. Não precisa instalar Node.js, NPM ou banco de dados.
+- Se já houver index.php ou arquivos de outro site, faça backup primeiro.
+
+5. ALTERAR WHATSAPP
+- No script.js, substitua o valor de WHATSAPP_NUMBER por seu número com DDI,
+  apenas números. Atualize também links wa.me existentes no index.html.
+
+6. NOTAS TÉCNICAS
+- Mapa incorporado do Google Maps e botões externos precisam de internet.
+- No primeiro acesso às fotos, elas são buscadas na CDN Pexels.
+- O formulário de pedido é o próprio WhatsApp (não há checkout interno).
+- Vídeo HTML5 local, sem dependência de hospedagem externa.
