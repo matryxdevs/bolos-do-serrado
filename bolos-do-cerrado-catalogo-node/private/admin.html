@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#25472c"><meta name="robots" content="noindex,nofollow">
+<title>Painel de gestão | Bolos do Cerrado</title>
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+<div id="loginPage" class="login-page">
+  <div class="login-mark"><img src="/assets/logo-original.png" alt="Bolos do Cerrado" width="115" height="115"></div>
+  <div class="login-card">
+    <span class="overline">ÁREA RESTRITA</span>
+    <h1>Gestão com sabor <em>de sucesso.</em></h1>
+    <p>Acesse o painel para gerenciar o cardápio e as solicitações de pedido.</p>
+    <form id="loginForm"><label>Senha de administrador <input id="loginPassword" type="password" autocomplete="current-password" required minlength="12" placeholder="Sua senha de acesso" /></label>
+    <button class="button primary" type="submit">Entrar no painel <span>↗</span></button><p role="alert" class="form-error" id="loginError"></p></form>
+    <a class="back-site" href="/">← Voltar ao site</a>
+  </div>
+</div>
+<div class="shell" id="shell" hidden>
+  <aside class="sidebar" aria-label="Menu de gestão">
+    <div class="sidebar-brand"><img src="/assets/logo-original.png" width="64" height="64" alt=""><div><strong>bolos do cerrado.</strong><small>PAINEL DE GESTÃO</small></div></div>
+    <div class="sidebar-group-title">GERENCIAMENTO</div>
+    <nav class="side-nav">
+      <button type="button" class="active" data-tab="overview"><span>◫</span> Visão geral</button>
+      <button type="button" data-tab="products"><span>▦</span> Cardápio e produtos</button>
+      <button type="button" data-tab="orders"><span>♧</span> Solicitações</button>
+      <button type="button" data-tab="settings"><span>⚙</span> Configurações</button>
+    </nav>
+    <div class="sidebar-footer"><a href="/" target="_blank" rel="noopener">↗ Ver site público</a><button type="button" id="logout">Sair do painel</button></div>
+  </aside>
+  <div class="main-area">
+    <header class="topbar"><div><span class="topbar-overline">BEM-VINDO À GESTÃO</span><h1 id="topTitle">Visão geral</h1></div><div class="topbar-actions"><a href="/" target="_blank" rel="noopener">↗ Visualizar loja</a><button type="button" id="reloadAll" aria-label="Atualizar dados">↻ Atualizar</button></div></header>
+    <div class="content">
+      <div class="notice" id="notice" hidden role="status"></div>
+      <section class="tab" data-panel="overview">
+        <div class="welcome-banner"><div><span class="overline">SEU NEGÓCIO EM UM SÓ LUGAR</span><h2>Organize seus bolos e<br><em>encante seus clientes.</em></h2><p>Catálogo, dados dos clientes e solicitações recebidas pelo site.</p><button type="button" class="button light" data-jump="products">Gerenciar cardápio ↗</button></div><div class="banner-art">✳</div></div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-icon">▦</div><small>PRODUTOS CADASTRADOS</small><strong id="statProducts">—</strong><span>Inclui os rascunhos</span></div>
+          <div class="stat-card"><div class="stat-icon">♧</div><small>TOTAL DE PEDIDOS SOLICITADOS</small><strong id="statOrders">—</strong><span>Solicitações registradas no site</span></div>
+          <div class="stat-card"><div class="stat-icon">◷</div><small>AGUARDANDO CONTATO/CONFIRMAÇÃO</small><strong id="statPending">—</strong><span>Confirmar manualmente</span></div>
+          <div class="stat-card"><div class="stat-icon">✓</div><small>VALOR DE PEDIDOS CONCLUÍDOS</small><strong id="statRevenue">—</strong><span>Estimativa antes de taxas e ajustes</span></div>
+        </div>
+        <div class="panel hints"><h3>Antes de publicar o cardápio</h3><p>Os seis produtos iniciais são apenas exemplos ilustrativos, visíveis mas indisponíveis para solicitação. Edite nome, descrição, valor e foto; depois ative a disponibilidade. Se preferir, oculte os exemplos em <b>Exibir no site</b>.</p><p>A contagem inclui formulários registrados no site, mesmo que o cliente ainda não tenha enviado a mensagem no WhatsApp. Isso não significa venda confirmada. Confirme cada pedido pelo atendimento antes de mudar o status.</p></div>
+        <div class="panel recent-panel"><div class="section-toolbar"><div><h2>Clientes mais recentes</h2><p>Nome, telefone e bolo solicitado.</p></div><button class="button outline" type="button" data-jump="orders">Ver todos os pedidos ↗</button></div><div id="overviewRecent" class="recent-list"></div></div>
+      </section>
+      <section class="tab" data-panel="products" hidden>
+        <div class="section-toolbar"><div><h2>Cardápio e produtos</h2><p>Edite sabores, valores, disponibilidade e imagens.</p></div><button type="button" id="addProduct" class="button primary">+ Adicionar bolo</button></div>
+        <div class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>PRODUTO</th><th>PREÇO</th><th>EXIBIÇÃO</th><th>DISPONIBILIDADE</th><th>AÇÕES</th></tr></thead><tbody id="productsBody"></tbody></table></div><div id="productsEmpty" class="empty-state" hidden>Nenhum produto cadastrado.</div></div>
+      </section>
+      <section class="tab" data-panel="orders" hidden>
+        <div class="section-toolbar"><div><h2>Solicitações de pedidos</h2><p>Nome, telefone, e-mail, localização, produto e quantidade. Verifique o WhatsApp antes de confirmar.</p></div><div class="backup-buttons"><a class="button outline" href="/api/admin/orders.csv">↓ Exportar CSV</a><a class="button outline" href="/api/admin/backup">↓ Backup do sistema</a></div></div>
+        <div class="panel filters-panel"><label>Filtrar por status <select id="orderFilter"><option value="all">Todos os status</option><option value="aguardando_confirmacao">Aguardando confirmação</option><option value="em_preparo">Em preparo</option><option value="pronto">Pronto</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select></label><label>Buscar cliente ou telefone <input id="orderSearch" type="search" placeholder="Nome, telefone, e-mail ou pedido" autocomplete="off" /></label><span id="ordersSummary"></span></div>
+        <div class="orders-list" id="ordersList"></div>
+      </section>
+      <section class="tab" data-panel="settings" hidden>
+        <div class="section-toolbar"><div><h2>Dados da loja</h2><p>Informações exibidas no site e usadas nas solicitações.</p></div></div>
+        <form id="settingsForm" class="panel settings-panel">
+          <div class="form-grid">
+            <label>Nome da loja <input name="shop_name" maxlength="150" required /></label>
+            <label>WhatsApp comercial (55 + DDD + número) <input name="whatsapp" inputmode="numeric" maxlength="15" required placeholder="5594999999999" /></label>
+            <label class="wide">Instagram (URL completa) <input name="instagram" type="url" required /></label>
+            <label class="wide">Endereço completo <input name="address" maxlength="250" required /></label>
+            <label class="wide">Horário de funcionamento <input name="hours" maxlength="250" placeholder="Ex.: Segunda a sábado, 8h às 18h" /></label>
+            <label class="wide">Chamada principal (opcional) <input name="headline" maxlength="250" /></label>
+            <label class="wide">Foto principal da página <span class="file-control"><input type="file" id="heroFile" accept="image/png,image/jpeg,image/webp" /><button type="button" class="button outline upload-button" data-upload="heroFile" data-target="hero_image" data-type="image">Enviar foto</button></span><input type="text" name="hero_image" readonly placeholder="/uploads/..." /></label>
+            <label class="wide">Vídeo promocional MP4 (até 12 MB) <span class="file-control"><input type="file" id="videoFile" accept="video/mp4" /><button type="button" class="button outline upload-button" data-upload="videoFile" data-target="video_url" data-type="video">Enviar vídeo</button></span><input type="text" name="video_url" readonly placeholder="/uploads/..." /></label>
+          </div>
+          <label class="check-row"><input name="enabled_orders" type="checkbox" /> Permitir solicitações de bolos pelo catálogo</label>
+          <button class="button primary" type="submit">Salvar configurações</button>
+        </form>
+      </section>
+      <footer class="admin-footer">Bolos do Cerrado · Painel administrativo seguro · Atendimento e confirmação pelo WhatsApp</footer>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop" id="productModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-header"><div><span class="overline">GESTÃO DE CARDÁPIO</span><h2 id="modalTitle">Novo produto</h2></div><button type="button" id="modalClose" aria-label="Fechar editor">✕</button></div>
+<form id="productForm">
+  <input type="hidden" name="id" />
+  <div class="form-grid">
+    <label class="wide">Nome do bolo <input name="name" required maxlength="90" placeholder="Ex.: Bolo de cenoura com chocolate" /></label>
+    <label class="wide">Descrição <textarea name="description" maxlength="350" rows="3" placeholder="Conte o que faz este bolo especial..."></textarea></label>
+    <label>Categoria <select name="category"><option value="classicos">Clássicos</option><option value="especiais">Especiais</option></select></label>
+    <label>Preço em R$ <input type="text" name="price" inputmode="decimal" placeholder="Ex.: 49,90 (vazio = consultar)" /></label>
+    <label class="wide">Destaque na imagem <input name="label" maxlength="60" placeholder="Ex.: Mais vendido" /></label>
+    <label class="wide">Foto do produto (JPG, PNG ou WEBP até 4MB)
+      <span class="file-control"><input id="productFile" type="file" accept="image/png,image/jpeg,image/webp" /><button type="button" class="button outline upload-button" data-upload="productFile" data-target="image_url" data-type="image">Enviar foto</button></span>
+      <input name="image_url" readonly placeholder="Selecione uma foto e clique em Enviar" />
+    </label>
+  </div>
+  <div class="checks"><label class="check-row"><input name="published" type="checkbox"> Exibir no site</label><label class="check-row"><input name="available" type="checkbox"> Disponível para pedidos</label></div>
+  <p class="helper">Para permitir a solicitação deste bolo, marque <b>Exibir no site</b> e <b>Disponível para pedidos</b>. Se o preço estiver vazio, o pedido será enviado com o valor "Sob consulta".</p>
+  <div class="modal-actions"><button type="button" id="modalCancel" class="button outline">Cancelar</button><button type="submit" class="button primary">Salvar produto</button></div>
+</form></div></div>
+<script src="/admin.js" defer></script>
+</body></html>
